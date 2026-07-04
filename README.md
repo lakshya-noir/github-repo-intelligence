@@ -55,7 +55,7 @@ repo-intelligence/
 
 ---
 
-## 🚀 Getting Started
+## 🚀 Running Locally
 
 ### Prerequisites
 
@@ -74,14 +74,15 @@ python -m venv venv
 source venv/bin/activate          # Windows: venv\Scripts\activate
 
 # 2. Install dependencies
-pip install fastapi uvicorn python-dotenv google-generativeai gitpython
+pip install -r backend/requirements.txt
 
 # 3. Configure your API key
 cp backend/.env.example backend/.env
-# Edit backend/.env and add your Gemini API key
+# Edit backend/.env and set your Gemini API key
 
-# 4. Start the server
-uvicorn backend.main:app --reload --port 8000
+# 4. Start the server (from the backend/ directory)
+cd backend
+uvicorn main:app --reload --port 8000
 ```
 
 The API will be live at `http://localhost:8000`.  
@@ -97,8 +98,7 @@ cd frontend
 # 1. Install dependencies
 npm install
 
-# 2. (Optional) Override the backend URL
-#    Default is http://localhost:8000
+# 2. (Optional) Override the backend URL — default is http://localhost:8000
 cp .env.example .env.local
 # Edit .env.local: VITE_API_URL="http://localhost:8000"
 
@@ -107,6 +107,54 @@ npm run dev
 ```
 
 Open `http://localhost:5173` in your browser.
+
+---
+
+## ☁️ Deploying to Production
+
+The project is pre-configured for **Railway** (backend) + **Vercel** (frontend).  
+All config files (`railway.json`, `vercel.json`, `requirements.txt`) are already committed — no extra setup needed.
+
+### Step 1 — Deploy the Backend on Railway
+
+1. Go to [railway.app](https://railway.app) → **New Project → Deploy from GitHub repo**
+2. Select `lakshya-noir/github-repo-intelligence`
+3. In **Settings → Source**, set **Root Directory** to `backend`
+4. In **Variables**, add:
+   ```
+   GEMINI_API_KEY=your_key_here
+   ```
+5. Hit **Deploy** — Railway picks up `railway.json` automatically
+
+Copy the Railway public URL once it's live (e.g. `https://codeatlas-backend.up.railway.app`).
+
+---
+
+### Step 2 — Deploy the Frontend on Vercel
+
+1. Go to [vercel.com](https://vercel.com) → **Add New Project → Import Git Repository**
+2. Select `lakshya-noir/github-repo-intelligence`
+3. Set **Root Directory** to `frontend`
+4. Under **Environment Variables**, add:
+   ```
+   VITE_API_URL=https://your-railway-url.up.railway.app
+   ```
+5. Hit **Deploy** — Vercel picks up `vercel.json` automatically
+
+> Vercel auto-detects Vite. No build settings need to be changed in the dashboard.
+
+---
+
+### Health Check
+
+Verify your backend is live by visiting:
+```
+https://your-railway-url.up.railway.app/health
+```
+Expected response:
+```json
+{ "status": "ok" }
+```
 
 ---
 
