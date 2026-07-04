@@ -1,0 +1,6 @@
+{
+  "name": "CodeAtlas",
+  "description": "An interactive full-stack codebase visualizer, complexity analyzer, and dependency mapper.",
+  "requestFramePermissions": [],
+  "majorCapabilities": []
+}
