@@ -112,21 +112,29 @@ Open `http://localhost:5173` in your browser.
 
 ## ☁️ Deploying to Production
 
-The project is pre-configured for **Railway** (backend) + **Vercel** (frontend).  
-All config files (`railway.json`, `vercel.json`, `requirements.txt`) are already committed — no extra setup needed.
+Backend → **Hugging Face Spaces** (free, always-on, no credit card)  
+Frontend → **Vercel** (free, always-on, no credit card)  
+All config files (`Dockerfile`, `vercel.json`) are already committed — no extra setup needed.
 
-### Step 1 — Deploy the Backend on Railway
+### Step 1 — Deploy the Backend on Hugging Face Spaces
 
-1. Go to [railway.app](https://railway.app) → **New Project → Deploy from GitHub repo**
-2. Select `lakshya-noir/github-repo-intelligence`
-3. In **Settings → Source**, set **Root Directory** to `backend`
-4. In **Variables**, add:
+1. Go to [huggingface.co/new-space](https://huggingface.co/new-space)
+2. Set **Space name** (e.g. `codeatlas-backend`), pick **Docker** as the SDK
+3. In the Space **Settings → Repository**, link your GitHub repo `lakshya-noir/github-repo-intelligence`  
+   _(or manually push — HF Spaces is also a git remote)_
+4. In Space **Settings → Secrets**, add:
    ```
-   GEMINI_API_KEY=your_key_here
+   GEMINI_API_KEY = your_key_here
    ```
-5. Hit **Deploy** — Railway picks up `railway.json` automatically
+5. HF Spaces finds the `Dockerfile` at the repo root and builds automatically
 
-Copy the Railway public URL once it's live (e.g. `https://codeatlas-backend.up.railway.app`).
+Your backend will be live at:
+```
+https://your-username-codeatlas-backend.hf.space
+```
+
+> The `/health` endpoint confirms it's running:  
+> `GET https://your-username-codeatlas-backend.hf.space/health` → `{ "status": "ok" }`
 
 ---
 
@@ -137,24 +145,11 @@ Copy the Railway public URL once it's live (e.g. `https://codeatlas-backend.up.r
 3. Set **Root Directory** to `frontend`
 4. Under **Environment Variables**, add:
    ```
-   VITE_API_URL=https://your-railway-url.up.railway.app
+   VITE_API_URL=https://your-username-codeatlas-backend.hf.space
    ```
 5. Hit **Deploy** — Vercel picks up `vercel.json` automatically
 
 > Vercel auto-detects Vite. No build settings need to be changed in the dashboard.
-
----
-
-### Health Check
-
-Verify your backend is live by visiting:
-```
-https://your-railway-url.up.railway.app/health
-```
-Expected response:
-```json
-{ "status": "ok" }
-```
 
 ---
 
