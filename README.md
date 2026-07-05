@@ -1,12 +1,3 @@
----
-title: CodeAtlas Backend
-emoji: 🗺️
-colorFrom: indigo
-colorTo: purple
-sdk: docker
-pinned: false
----
-
 # CodeAtlas — GitHub Repository Intelligence
 
 > Point CodeAtlas at any public GitHub repository and get an instant AI-powered breakdown: architecture, tech stack, key files, quality report, and an interactive visual map — all in your browser.
